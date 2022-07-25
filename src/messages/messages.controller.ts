@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from './Message';
@@ -22,11 +23,12 @@ export class MessagesController {
   }
 
   @Get(':id')
-  findById(@Param() params) {
+  findById(@Param('id', ParseIntPipe) id) {
     //Está recebendo uma string
     // console.log(params.id, typeof params.id);
     //colocando um '+' entende que é um number
-    return this.messagesService.findById(+params.id).catch((e) => {
+    // return this.messagesService.findById(+params.id)
+    return this.messagesService.findById(id).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
@@ -37,15 +39,15 @@ export class MessagesController {
   }
 
   @Put(':id')
-  update(@Param() params, @Body() messageDto: Message) {
-    return this.messagesService.update(+params.id, messageDto).catch((e) => {
+  update(@Param('id', ParseIntPipe) id, @Body() messageDto: Message) {
+    return this.messagesService.update(id, messageDto).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
 
   @Delete(':id')
-  delete(@Param() params) {
-    return this.messagesService.delete(+params.id).catch((e) => {
+  delete(@Param('id', ParseIntPipe) id) {
+    return this.messagesService.delete(id).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
