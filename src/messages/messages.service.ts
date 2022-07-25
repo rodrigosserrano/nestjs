@@ -16,12 +16,13 @@ export class MessagesService {
   ];
 
   findAll() {
-    return this.messages;
+    return this.messages.filter(Boolean);
   }
 
   async findById(id: number) {
     //está validando se o ID é o mesmo ID que existe no array, porém valida também o tipo
-    const message = this.messages.find((msg) => msg.id === id);
+    // ? safe operator, não avança a partir do msg se o msg for null
+    const message = this.messages.find((msg) => msg?.id === id);
 
     if (!message) throw Error(`Mensagem com o ID ${id} não encontrada`);
 
@@ -41,16 +42,25 @@ export class MessagesService {
     return this.messages;
   }
 
-  update(id: number, message: Message) {
-    const index = this.messages.findIndex((message) => message.id === id);
+  async update(id: number, messageDto: MessageDTO) {
+    const index = this.messages.findIndex((message) => message?.id === id);
+
+    if (index < 0) throw Error(`Mensagem com o ID ${id} não encontrada`);
+
+    const message: Message = {
+      id,
+      ...messageDto,
+    };
 
     this.messages[index] = message;
 
-    return this.messages[index];
+    return message;
   }
 
-  delete(id: number) {
-    const index = this.messages.findIndex((message) => message.id === id);
+  async delete(id: number) {
+    const index = this.messages.findIndex((message) => message?.id === id);
+
+    if (index < 0) throw Error(`Mensagem com o ID ${id} não encontrada`);
 
     delete this.messages[index];
 

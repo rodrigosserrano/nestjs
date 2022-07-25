@@ -32,17 +32,21 @@ export class MessagesController {
   }
 
   @Post()
-  create(@Body() body: MessageDTO) {
-    return this.messagesService.create(body);
+  create(@Body() messageDto: MessageDTO) {
+    return this.messagesService.create(messageDto);
   }
 
   @Put(':id')
-  update(@Param() params, @Body() message: Message) {
-    return this.messagesService.update(+params.id, message);
+  update(@Param() params, @Body() messageDto: Message) {
+    return this.messagesService.update(+params.id, messageDto).catch((e) => {
+      throw new NotFoundException(e.message);
+    });
   }
 
   @Delete(':id')
   delete(@Param() params) {
-    return this.messagesService.delete(+params.id);
+    return this.messagesService.delete(+params.id).catch((e) => {
+      throw new NotFoundException(e.message);
+    });
   }
 }
