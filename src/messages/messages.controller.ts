@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from './Message';
+import { MessageDTO } from './MessageDTO';
 
 @Controller('messages')
 export class MessagesController {
@@ -31,7 +32,7 @@ export class MessagesController {
   }
 
   @Post()
-  create(@Body() body: Message) {
+  create(@Body() body: MessageDTO) {
     return this.messagesService.create(body);
   }
 
