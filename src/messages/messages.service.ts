@@ -18,9 +18,13 @@ export class MessagesService {
     return this.messages;
   }
 
-  findById(id: number) {
+  async findById(id: number) {
     //está validando se o ID é o mesmo ID que existe no array, porém valida também o tipo
-    return this.messages.find((message) => message.id === id);
+    const message = this.messages.find((msg) => msg.id === id);
+
+    if (!message) throw Error(`Mensagem com o ID ${id} não encontrada`);
+
+    return message;
   }
 
   create(body: Message) {

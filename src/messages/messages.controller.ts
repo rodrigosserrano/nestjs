@@ -1,11 +1,12 @@
 import {
-  Body,
   Controller,
-  Delete,
-  Get,
+  NotFoundException,
+  Body,
   Param,
+  Get,
   Post,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { Message } from './Message';
@@ -24,7 +25,9 @@ export class MessagesController {
     //Está recebendo uma string
     // console.log(params.id, typeof params.id);
     //colocando um '+' entende que é um number
-    return this.messagesService.findById(+params.id);
+    return this.messagesService.findById(+params.id).catch((e) => {
+      throw new NotFoundException(e.message);
+    });
   }
 
   @Post()
